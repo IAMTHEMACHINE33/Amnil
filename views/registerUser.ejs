@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+</head>
+<body>
+    <h1>Create User</h1> 
+    <form action = "/users/register" method = "post" enctype="multipart/form-data">
+        <div>
+            <label for = "firstname"> Firstname
+                <% var firstname = ""; %>
+                <input type = "text" name = "firstname" onchange="handleInputChange(event, 'firstname')" value="<%= locals.firstname %>"></input>
+            </label>
+        </div>
+        <div>
+            <label for = "lastname"> Lastname
+                <input type = "text" name = "lastname" onchange="handleInputChange(event, 'lastname')" value="<%= locals.lastname %>"/>
+            </label>
+        </div>
+        <div>
+            <label for = "username"> Username
+                <input type = "text" name = "username" onchange="handleInputChange(event, 'username')" value="<%= locals.username%>"/>
+            </label>
+        </div>
+        <div>
+            <label for = "profile">Upload Picture</label>
+            <input type = "file" name = "profile"/>
+        </div>
+        <button type = "submit" value="Upload">Submit</button>
+    </form>
+
+</body>
+</html>
