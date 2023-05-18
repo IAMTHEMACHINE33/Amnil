@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const db = require("../db")
 // const users = require("../users.json");
-const app = express();
 
-// Middleware to parse form data
-app.use(express.urlencoded({ extended: true }));
 
 const storage = multer.diskStorage({
     destination : function (req, file, cb)
@@ -47,19 +45,26 @@ router.get("/register", (req, res) => {
     res.render("registerUser", {firstname : "My name"})
 })
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
     console.log(req.body)
     const {firstname, lastname ,username} = req.body;
-    users.push({firstname, lastname, username})
-    upload(req, res, (err) => {
-        if (err)
-        {
-            return res.send("Error uploading file")
-        }
-        users.push({profile : req.file.filename})
-        res.render("users", {users})
-        return; 
-    })
+    const user = await db.query(`select * from users_table where username = '${username}';`)
+    console.log('Users', user)
+    if (user.rows.length)
+    {
+        return res.status(400).send("User already exists")
+    }
+    const newUser = await db.query(`insert into users_table(firstname, lastname, username) values('${firstname}', '${lastname}', '${username}')`)
+    // users.push({firstname, lastname, username})
+    // upload(req, res, (err) => {
+    //     if (err)
+    //     {
+    //         return res.send("Error uploading file")
+    //     }
+    //     users.push({profile : req.file.filename})
+    //     res.render("users", {users})
+    //     return; 
+    // })
 })
 
 module.exports = router;
